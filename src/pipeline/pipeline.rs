@@ -267,7 +267,10 @@ impl<T> Pipeline<T> where T: Dispatch {
                     // The service is done with the connection. In this case, a
                     // `Done` frame should be written to the transport and the
                     // transport should start shutting down.
-                    unimplemented!();
+                    // unimplemented!();
+                    try!(self.dispatch.transport().write(Frame::Done));
+                    self.in_body = None;
+                    break
                 }
                 // Nothing to dispatch
                 Async::NotReady => break,
